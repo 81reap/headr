@@ -1,0 +1,11 @@
+{
+	"id": "headr",
+	"name": "headr",
+	"version": "1.0.0",
+	"minAppVersion": "0.15.0",
+	"description": "adds frontmatter automagically to docs",
+	"author": "Prayag Bhakar",
+	"authorUrl": "https://prayag.bhakar.org",
+	"fundingUrl": "https://orayag.bhakar.org",
+	"isDesktopOnly": false
+}
