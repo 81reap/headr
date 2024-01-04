@@ -1,4 +1,4 @@
-import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting, TFile } from 'obsidian';
+import { App, Plugin, TFile } from 'obsidian';
 import { ulid } from "ulid";
 
 // Remember to rename these classes and interfaces!
@@ -23,26 +23,19 @@ const defaultSettings = [
 ]
 
 function checkFrontmatter(app: App): (f: TFile) => Promise<void> {
-  return async function (f: TFile): Promise<void> {
-  	for (let i = 0; i < defaultSettings.length; i++) {
-  		let prop = defaultSettings[i][0] as string
-  		let def = defaultSettings[i][1]
-  		let regexPattern = defaultSettings[i][2]
+	return async function (f: TFile): Promise<void> {
+		for (let i = 0; i < defaultSettings.length; i++) {
+			const prop = defaultSettings[i][0] as string
+			const def = defaultSettings[i][1]
+			const regexPattern = defaultSettings[i][2]
 
-  		if (!app.metadataCache.getFileCache(f)?.frontmatter?.[prop]) {
-	      await app.fileManager.processFrontMatter(f, (data) => {
+			if (!app.metadataCache.getFileCache(f)?.frontmatter?.[prop]) {
+				await app.fileManager.processFrontMatter(f, (data) => {
 					data[prop] = def;
-	      });
-	    }
-  	} 
-  };
-}
-
-function addIDsToAllNotes(app: App) {
-    const _addID = checkFrontmatter(app);
-    return function () {
-        app.vault.getMarkdownFiles().forEach((f) => _addID(f));
-    };
+				});
+			}
+		} 
+	};
 }
 
 export default class headr extends Plugin {
@@ -51,9 +44,9 @@ export default class headr extends Plugin {
 	// Called when a file has been indexed or updated. It is now cached.
 	async onload() {
 		// await this.loadSettings();
- 		this.registerEvent(
-      this.app.metadataCache.on("changed", checkFrontmatter(this.app))
-    );
+		this.registerEvent(
+			this.app.metadataCache.on("changed", checkFrontmatter(this.app))
+		);
 
 		// // This adds a settings tab so the user can configure various aspects of the plugin
 		// this.addSettingTab(new SampleSettingTab(this.app, this));
